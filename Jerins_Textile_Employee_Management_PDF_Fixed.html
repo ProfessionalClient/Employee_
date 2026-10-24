@@ -1,0 +1,738 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#103c32">
+<title>Jerin's Textile | Employee Management</title><style>
+:root {
+  --primary: #103c32;
+  --primary-light: #20594a;
+  --gold: #d9b56d;
+  --background: #f3f6f4;
+  --text: #1d3029;
+  --muted: #728078;
+  --border: #e0e8e2;
+  --danger: #b52f35;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font: 14px Arial, sans-serif;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+header { background: var(--primary); color: white; border-bottom: 3px solid var(--gold); }
+.header-inner {
+  max-width: 1400px; margin: auto; padding: 15px 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.logo {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: grid; place-items: center; background: var(--gold);
+  color: var(--primary); font-size: 25px; font-weight: 900;
+}
+.brand h1 { font-size: 18px; margin: 0; }
+.brand p { font-size: 9px; letter-spacing: 1.5px; margin: 4px 0 0; color: #d8e4dd; }
+.header-tag { border: 1px solid #ffffff40; border-radius: 25px; padding: 7px 12px; font-size: 10px; }
+main { max-width: 1400px; margin: auto; padding: 24px 22px 35px; }
+.intro { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+.eyebrow { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.4px; color: var(--primary-light); margin: 0 0 6px; }
+h2 { margin: 0; font-size: clamp(24px, 3vw, 32px); }
+.subtitle { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid transparent; border-radius: 9px; padding: 10px 13px; min-height: 39px; font-size: 12px; font-weight: 700; }
+.btn-primary { background: var(--primary-light); color: white; }
+.btn-primary:hover { background: var(--primary); }
+.btn-gold { background: var(--gold); color: var(--primary); }
+.btn-light { background: white; border-color: var(--border); color: var(--text); }
+.btn-danger { background: #fff1f1; border-color: #f2d0d0; color: var(--danger); }
+.btn-small { padding: 6px 9px; min-height: 31px; font-size: 11px; }
+.stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 13px; margin-bottom: 18px; }
+.stat,.panel { background: white; border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 5px 20px #103c320f; min-width: 0; }
+.stat { padding: 16px 18px; position: relative; overflow: hidden; }
+.stat:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--gold); }
+.stat label { color: var(--muted); font-size: 11px; }
+.stat strong { display: block; margin-top: 5px; font-size: 25px; overflow-wrap: anywhere; }
+.columns { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 17px; align-items: start; }
+.panel { overflow: hidden; }
+.panel-head { padding: 15px 17px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--border); }
+.panel-head h3 { margin: 0; font-size: 16px; }
+.panel-head p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+.badge { padding: 4px 8px; border-radius: 25px; background: #e8f5ed; color: #176c45; font-size: 9px; font-weight: 800; white-space: nowrap; }
+.panel-body { padding: 17px; }
+.fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.field { min-width: 0; }
+.field.full { grid-column: 1/-1; }
+.field label { display: block; margin-bottom: 5px; font-size: 11px; font-weight: 700; }
+.required { color: var(--danger); }
+input,select,textarea {
+  width: 100%; min-width: 0; min-height: 41px; padding: 10px 11px;
+  border: 1px solid #dbe4dd; border-radius: 8px; background: white; color: var(--text);
+}
+input:focus,select:focus,textarea:focus { outline: 2px solid #20594a40; border-color: var(--primary-light); }
+textarea { resize: vertical; min-height: 72px; }
+.photo-row { display: flex; align-items: center; gap: 12px; }
+.photo-preview,.avatar {
+  width: 52px; height: 52px; flex-shrink: 0; object-fit: cover;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: #f6ecd4; color: var(--primary); display: grid; place-items: center; font-weight: 800;
+}
+.hint { font-size: 10px; color: var(--muted); margin-top: 4px; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+.guide { display: grid; gap: 10px; }
+.guide-item { background: #f7faf8; border: 1px solid #e8efea; border-radius: 10px; padding: 12px; }
+.guide-item strong { font-size: 10px; text-transform: uppercase; letter-spacing: .7px; color: var(--primary-light); }
+.guide-item p { margin: 5px 0 0; font-size: 12px; }
+.notice { margin-top: 13px; padding: 11px; background: #fff8e8; color: #76551c; border: 1px solid #f0dfb9; border-radius: 9px; font-size: 11px; }
+.records { margin-top: 19px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 15px; border-bottom: 1px solid var(--border); }
+.search { flex: 1; min-width: 180px; }
+.toolbar select { width: auto; min-width: 140px; }
+.table-wrap { width: 100%; overflow-x: auto; }
+table { width: 100%; min-width: 730px; border-collapse: collapse; }
+th { background: #f7faf8; color: #68776e; text-align: left; padding: 12px; font-size: 9px; text-transform: uppercase; letter-spacing: .6px; white-space: nowrap; }
+td { padding: 11px 12px; border-bottom: 1px solid #edf1ee; font-size: 12px; }
+.person { display: flex; align-items: center; gap: 9px; min-width: 145px; }
+.person .avatar,.person img { width: 35px; height: 35px; border-radius: 8px; }
+.person strong { display: block; }
+.person small { display: block; color: var(--muted); font-size: 10px; }
+.status { display: inline-block; padding: 4px 8px; border-radius: 20px; font-size: 9px; font-weight: 800; white-space: nowrap; }
+.status-active { background: #e6f5eb; color: #176c45; }
+.status-leave { background: #fff2d9; color: #8a5b08; }
+.status-inactive { background: #f0f2f1; color: #64736b; }
+.row-actions { display: flex; gap: 5px; }
+.empty { text-align: center; padding: 28px 12px; color: var(--muted); font-size: 12px; }
+.empty strong { display: block; color: var(--text); }
+footer { max-width: 1400px; margin: auto; padding: 0 22px 22px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; color: #849188; font-size: 10px; }
+.toast { position: fixed; z-index: 50; bottom: 16px; right: 16px; max-width: calc(100vw - 32px); padding: 12px 16px; color: white; background: var(--primary); border-radius: 10px; box-shadow: 0 10px 30px #0002; }
+.modal-back { display: none; position: fixed; inset: 0; z-index: 40; align-items: center; justify-content: center; background: #05181399; padding: 14px; }
+.modal-back.open { display: flex; }
+.modal { width: min(680px,100%); max-height: 90vh; overflow: auto; border-radius: 15px; background: white; }
+.modal-body { padding: 18px; }
+.detail-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+.detail { padding: 10px; background: #f7faf8; border-radius: 8px; overflow-wrap: anywhere; }
+.detail small { display: block; color: var(--muted); font-size: 9px; text-transform: uppercase; }
+.detail div { margin-top: 4px; font-size: 12px; font-weight: 600; }
+[hidden] { display: none !important; }
+@media(max-width:900px) { .stats { grid-template-columns: repeat(2,minmax(0,1fr)); } .columns { grid-template-columns: minmax(0,1fr); } }
+@media(max-width:560px) {
+  .header-inner { padding: 13px; } .brand h1 { font-size: 16px; } .brand p { font-size: 8px; letter-spacing: .8px; }
+  .header-tag { display: none; } main { padding: 17px 11px 28px; }
+  .intro { align-items: flex-start; flex-direction: column; } .actions { width: 100%; }
+  .actions .btn { flex: 1; padding: 9px 7px; font-size: 10px; }
+  .stats { gap: 8px; } .stat { padding: 13px 12px; } .stat strong { font-size: 21px; }
+  .panel-head { padding: 13px; } .panel-body { padding: 13px; }
+  .fields { grid-template-columns: minmax(0,1fr); } .field.full { grid-column: auto; }
+  .toolbar { padding: 10px; } .search { flex-basis: 100%; min-width: 0; }
+  .toolbar select { flex: 1; min-width: 0; } .detail-grid { grid-template-columns: minmax(0,1fr); }
+  .form-actions .btn { flex: 1; } footer { padding: 0 12px 18px; }
+}
+@media print {
+  header,.intro,.stats,.columns,.toolbar,.row-actions,footer,.badge { display: none !important; }
+  body,main { padding: 0; margin: 0; background: white; }
+  .panel { box-shadow: none; border: 0; } .records { margin: 0; }
+  .table-wrap { overflow: visible; } table { min-width: 0; } th,td { padding: 6px; font-size: 9px; }
+}
+</style></head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand"><div class="logo">J</div><div><h1>Jerin's Textile</h1><p>Employee Management System</p></div></div>
+    <span class="header-tag">STORE ADMINISTRATION</span>
+  </div>
+</header><main>
+  <section class="intro">
+    <div><p class="eyebrow">People &amp; Operations</p><h2>Employee Dashboard</h2><p class="subtitle">Manage employee records, salary information and staff documents.</p></div>
+    <div class="actions">
+      <button type="button" class="btn btn-light" id="csvBtn">Export CSV</button>
+      <button type="button" class="btn btn-light" id="backupBtn">Backup JSON</button>
+      <button type="button" class="btn btn-gold" id="newBtn">+ Add Employee</button>
+    </div>
+  </section>  <section class="stats">
+    <div class="stat"><label>Total Employees</label><strong id="total">0</strong></div>
+    <div class="stat"><label>Active Employees</label><strong id="activeCount">0</strong></div>
+    <div class="stat"><label>Departments</label><strong id="departmentCount">0</strong></div>
+    <div class="stat"><label>Monthly Active Payroll</label><strong id="payroll">₹0</strong></div>
+  </section>  <section class="columns">
+    <section class="panel" id="formPanel">
+      <div class="panel-head"><div><h3 id="formTitle">Register Employee</h3><p>Fields marked * are required.</p></div><span class="badge" id="formBadge">NEW RECORD</span></div>
+      <div class="panel-body">
+        <form id="employeeForm">
+          <input type="hidden" id="recordId">
+          <div class="fields">
+            <div class="field full"><label for="fullName">Full Name <span class="required">*</span></label><input id="fullName" required maxlength="100" autocomplete="name"></div>
+            <div class="field"><label for="mobile">Mobile Number <span class="required">*</span></label><input id="mobile" type="tel" required maxlength="25" autocomplete="tel"></div>
+            <div class="field"><label for="email">Email Address</label><input id="email" type="email" maxlength="120" autocomplete="email"></div>
+            <div class="field"><label for="gender">Gender</label><select id="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
+            <div class="field"><label for="dob">Date of Birth</label><input id="dob" type="date"></div>
+            <div class="field"><label for="department">Department <span class="required">*</span></label><select id="department" required><option value="">Select Department</option><option>Management</option><option>Sales</option><option>Billing</option><option>Inventory</option><option>Tailoring</option><option>Customer Service</option><option>Security</option><option>Delivery</option><option>Human Resources</option><option>Other</option></select></div>
+            <div class="field"><label for="designation">Job Designation <span class="required">*</span></label><input id="designation" required maxlength="80" placeholder="e.g. Sales Associate"></div>
+            <div class="field"><label for="employmentType">Employment Type</label><select id="employmentType"><option>Full-time</option><option>Part-time</option><option>Contract</option><option>Temporary</option><option>Intern</option></select></div>
+            <div class="field"><label for="joiningDate">Joining Date <span class="required">*</span></label><input id="joiningDate" type="date" required></div>
+            <div class="field"><label for="salary">Monthly Salary (₹) <span class="required">*</span></label><input id="salary" type="number" min="0" max="100000000" step="0.01" required inputmode="decimal"></div>
+            <div class="field"><label for="status">Employment Status</label><select id="status"><option>Active</option><option>On Leave</option><option>Inactive</option></select></div>
+            <div class="field"><label for="emergencyContact">Emergency Contact</label><input id="emergencyContact" type="tel" maxlength="30"></div>
+            <div class="field full"><label for="address">Address</label><textarea id="address" maxlength="500"></textarea></div>
+            <div class="field full"><label for="notes">Notes</label><textarea id="notes" maxlength="1000"></textarea></div>
+            <div class="field full">
+              <label for="photoFile">Employee Photo</label>
+              <div class="photo-row">
+                <img id="photoPreview" class="photo-preview" alt="Photo preview" hidden>
+                <div id="photoPlaceholder" class="photo-preview">No photo</div>
+                <div style="flex:1;min-width:0">
+                  <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp">
+                  <div class="hint">JPG, PNG or WebP. Maximum file size: 8 MB.</div>
+                  <button type="button" class="btn btn-light btn-small" id="removePhoto">Remove Photo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions"><button type="submit" class="btn btn-primary" id="saveBtn">Save Employee</button><button type="button" class="btn btn-light" id="clearBtn">Clear Form</button></div>
+        </form>
+      </div>
+    </section><section class="panel">
+  <div class="panel-head"><div><h3>Administration Tools</h3><p>Tools for staff record management.</p></div></div>
+  <div class="panel-body">
+    <div class="guide">
+      <div class="guide-item"><strong>01 / Employee Records</strong><p>Register, view, edit, search and delete employees.</p></div>
+      <div class="guide-item"><strong>02 / PDF Profiles</strong><p>Download an individual employee profile in A4 landscape format.</p></div>
+      <div class="guide-item"><strong>03 / Data Backup</strong><p>Export records as a CSV spreadsheet or JSON backup.</p></div>
+      <div class="guide-item"><strong>04 / Browser Storage</strong><p>Records remain in this browser on this device; they do not sync automatically.</p></div>
+    </div>
+    <div class="notice"><strong>Privacy:</strong> This is a browser-only prototype, not a secure multi-user database. Avoid storing sensitive employee information on shared devices or public demo sites.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+      <button type="button" class="btn btn-light" id="importBtn">Import JSON Backup</button>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+      <button type="button" class="btn btn-light" id="printBtn">Print Directory</button>
+    </div>
+  </div>
+</section>
+
+  </section>  <section class="panel records" id="recordsPanel">
+    <div class="panel-head"><div><h3>Employee Directory</h3><p id="recordCount">0 employee records</p></div><span class="badge">LIVE DIRECTORY</span></div>
+    <div class="toolbar">
+      <input id="search" class="search" type="search" placeholder="Search name, phone, email or ID..." aria-label="Search employees">
+      <select id="departmentFilter" aria-label="Filter department"><option value="">All Departments</option></select>
+      <select id="statusFilter" aria-label="Filter status"><option value="">All Statuses</option><option>Active</option><option>On Leave</option><option>Inactive</option></select>
+    </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Employee</th><th>Employee ID</th><th>Department / Role</th><th>Monthly Salary</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tableBody"></tbody></table>
+      <div class="empty" id="empty"><strong>No employees yet</strong>Add your first employee using the form above.</div>
+    </div>
+  </section>
+</main><footer><span>© <span id="year"></span> Jerin's Textile</span><span>Employee Management System</span></footer>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<div class="modal-back" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal"><div class="panel-head"><h3 id="modalTitle">Employee Profile</h3><button type="button" class="btn btn-light btn-small" id="closeModal">Close ✕</button></div><div class="modal-body" id="modalBody"></div></div>
+</div><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script><script>
+(function () {
+  "use strict";
+  const STORAGE_KEY = "jerinsTextileEmployees_v4";
+  const LEGACY_KEYS = ["jerinsTextileEmployees_v3"];
+  const $ = id => document.getElementById(id);
+  const fieldIds = ["fullName","mobile","email","gender","dob","department","designation","employmentType","joiningDate","salary","status","emergencyContact","address","notes"];
+  const statuses = ["Active", "On Leave", "Inactive"];
+  const employmentTypes = ["Full-time", "Part-time", "Contract", "Temporary", "Intern"];
+  const departments = ["Management","Sales","Billing","Inventory","Tailoring","Customer Service","Security","Delivery","Human Resources","Other"];
+  let employees = [];
+  let photoData = "";
+  let toastTimer = null;
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+  }
+  function money(value) {
+    return new Intl.NumberFormat("en-IN", {style:"currency", currency:"INR", maximumFractionDigits:2}).format(Number(value) || 0);
+  }
+  function dateText(value) {
+    if (!value) return "—";
+    const d = new Date(String(value) + "T00:00:00");
+    return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleDateString("en-IN", {day:"2-digit", month:"short", year:"numeric"});
+  }
+  function makeId() {
+    return "JTX-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
+  }
+  function notify(message) {
+    const el = $("toast");
+    el.textContent = message;
+    el.hidden = false;
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.hidden = true; }, 3500);
+  }
+  function safePhoto(photo) {
+    return typeof photo === "string" && /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/i.test(photo) ? photo : "";
+  }
+  function validRecord(e) {
+    return !!e && typeof e === "object" && typeof e.id === "string" &&
+      typeof e.fullName === "string" && e.fullName.trim().length > 0 &&
+      typeof e.mobile === "string" && typeof e.department === "string" &&
+      typeof e.designation === "string" && Number.isFinite(Number(e.salary)) && Number(e.salary) >= 0;
+  }
+  function persist(showError = true) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(employees));
+      return true;
+    } catch (error) {
+      console.error("Employee storage failed:", error);
+      if (showError) notify("Could not save: browser storage may be full or blocked. Try removing the photo or exporting a backup.");
+      return false;
+    }
+  }
+  function load() {
+    let raw = null;
+    try {
+      raw = localStorage.getItem(STORAGE_KEY);
+      if (raw === null) {
+        for (const key of LEGACY_KEYS) {
+          const legacy = localStorage.getItem(key);
+          if (legacy !== null) { raw = legacy; break; }
+        }
+      }
+      const parsed = JSON.parse(raw || "[]");
+      employees = Array.isArray(parsed) ? parsed.filter(validRecord).map(e => ({
+        ...e,
+        salary: Number(e.salary) || 0,
+        photo: safePhoto(e.photo),
+        status: statuses.includes(e.status) ? e.status : "Inactive",
+        employmentType: employmentTypes.includes(e.employmentType) ? e.employmentType : "Full-time"
+      })) : [];
+      persist(false);
+    } catch (error) {
+      console.error("Employee data could not be loaded:", error);
+      employees = [];
+      notify("Stored data could not be read. Import a valid JSON backup if you have one.");
+    }
+  }
+  function avatar(e, cls) {
+    const photo = safePhoto(e.photo);
+    if (photo) return `<img class="${escapeHTML(cls)}" src="${escapeHTML(photo)}" alt="${escapeHTML(e.fullName)} photo">`;
+    const initials = String(e.fullName || "?").trim().split(/\s+/).slice(0,2).map(part => part.charAt(0)).join("").toUpperCase() || "?";
+    return `<div class="${escapeHTML(cls)}" aria-label="${escapeHTML(e.fullName)} initials">${escapeHTML(initials)}</div>`;
+  }
+  function filteredEmployees() {
+    const query = $("search").value.trim().toLowerCase();
+    const dept = $("departmentFilter").value;
+    const status = $("statusFilter").value;
+    return employees.filter(e => {
+      const searchable = [e.id,e.fullName,e.mobile,e.email,e.department,e.designation].join(" ").toLowerCase();
+      return (!query || searchable.includes(query)) && (!dept || e.department === dept) && (!status || e.status === status);
+    }).sort((a,b) => a.fullName.localeCompare(b.fullName));
+  }
+  function render() {
+    const active = employees.filter(e => e.status === "Active");
+    $("total").textContent = employees.length;
+    $("activeCount").textContent = active.length;
+    $("departmentCount").textContent = new Set(employees.map(e => e.department).filter(Boolean)).size;
+    $("payroll").textContent = money(active.reduce((sum,e) => sum + (Number(e.salary) || 0), 0));
+    const filter = $("departmentFilter");
+    const selected = filter.value;
+    const usedDepartments = [...new Set([...departments, ...employees.map(e => e.department).filter(Boolean)])].sort((a,b)=>a.localeCompare(b));
+    filter.innerHTML = '<option value="">All Departments</option>' + usedDepartments.map(d => `<option value="${escapeHTML(d)}">${escapeHTML(d)}</option>`).join("");
+    if (usedDepartments.includes(selected)) filter.value = selected;
+    const list = filteredEmployees();
+    $("recordCount").textContent = `${list.length} of ${employees.length} employee record${employees.length === 1 ? "" : "s"}`;
+    $("empty").hidden = list.length > 0;
+    $("empty").innerHTML = employees.length ? '<strong>No matching employees</strong>Change your search or filters.' : '<strong>No employees yet</strong>Add your first employee using the form above.';
+    $("tableBody").innerHTML = list.map(e => {
+      const statusClass = e.status === "Active" ? "status-active" : e.status === "On Leave" ? "status-leave" : "status-inactive";
+      return `<tr>
+        <td><div class="person">${avatar(e,"avatar")}<div><strong>${escapeHTML(e.fullName)}</strong><small>${escapeHTML(e.mobile)}</small></div></div></td>
+        <td>${escapeHTML(e.id)}</td>
+        <td><strong>${escapeHTML(e.department)}</strong><br><small>${escapeHTML(e.designation)}</small></td>
+        <td>${money(e.salary)}</td>
+        <td><span class="status ${statusClass}">${escapeHTML(e.status)}</span></td>
+        <td><div class="row-actions"><button type="button" class="btn btn-light btn-small" data-action="view" data-id="${escapeHTML(e.id)}">View</button><button type="button" class="btn btn-light btn-small" data-action="edit" data-id="${escapeHTML(e.id)}">Edit</button><button type="button" class="btn btn-danger btn-small" data-action="delete" data-id="${escapeHTML(e.id)}">Delete</button></div></td>
+      </tr>`;
+    }).join("");
+  }
+  function setPhotoPreview(photo) {
+    photoData = safePhoto(photo);
+    $("photoPreview").hidden = !photoData;
+    $("photoPlaceholder").hidden = !!photoData;
+    if (photoData) $("photoPreview").src = photoData;
+    else $("photoPreview").removeAttribute("src");
+  }
+  function clearForm() {
+    $("employeeForm").reset();
+    $("recordId").value = "";
+    setPhotoPreview("");
+    $("formTitle").textContent = "Register Employee";
+    $("formBadge").textContent = "NEW RECORD";
+    $("saveBtn").textContent = "Save Employee";
+    $("joiningDate").value = "";
+    $("status").value = "Active";
+    $("employmentType").value = "Full-time";
+  }
+  function readForm() {
+    const record = {};
+    fieldIds.forEach(id => { record[id] = $(id).value.trim(); });
+    record.salary = Number(record.salary);
+    record.photo = photoData;
+    return record;
+  }
+  function editEmployee(id) {
+    const e = employees.find(item => item.id === id);
+    if (!e) return notify("Employee record not found.");
+    $("recordId").value = e.id;
+    fieldIds.forEach(id => { $(id).value = e[id] == null ? "" : String(e[id]); });
+    setPhotoPreview(e.photo);
+    $("formTitle").textContent = "Edit Employee";
+    $("formBadge").textContent = "EDIT RECORD";
+    $("saveBtn").textContent = "Update Employee";
+    $("formPanel").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+  function showProfile(id) {
+    const e = employees.find(item => item.id === id);
+    if (!e) return notify("Employee record not found.");
+    const details = [
+      ["Employee ID",e.id],["Full Name",e.fullName],["Mobile",e.mobile],["Email",e.email],
+      ["Gender",e.gender],["Date of Birth",dateText(e.dob)],["Department",e.department],["Designation",e.designation],
+      ["Employment Type",e.employmentType],["Joining Date",dateText(e.joiningDate)],["Monthly Salary",money(e.salary)],
+      ["Status",e.status],["Emergency Contact",e.emergencyContact],["Address",e.address],["Notes",e.notes]
+    ];
+    $("modalTitle").textContent = e.fullName + " — Employee Profile";
+    $("modalBody").innerHTML = `<div style="display:flex;gap:12px;align-items:center;margin-bottom:15px">${avatar(e,"avatar")}<div><strong>${escapeHTML(e.fullName)}</strong><div style="color:var(--muted);font-size:12px">${escapeHTML(e.designation)} · ${escapeHTML(e.department)}</div></div></div><div class="detail-grid">${details.map(([label,value])=>`<div class="detail"><small>${escapeHTML(label)}</small><div>${escapeHTML(value || "—").replace(/\n/g,"<br>")}</div></div>`).join("")}</div><div class="form-actions"><button type="button" class="btn btn-primary" id="profileEdit">Edit Employee</button><button type="button" class="btn btn-light" id="profilePdf">Download PDF Profile</button></div>`;
+    $("modal").classList.add("open");
+    $("profileEdit").addEventListener("click", () => { closeModal(); editEmployee(id); });
+    $("profilePdf").addEventListener("click", () => downloadProfilePDF(id));
+  }
+  function closeModal() { $("modal").classList.remove("open"); }
+  function csvCell(value) { return '"' + String(value ?? "").replace(/"/g,'""') + '"'; }
+  function downloadBlob(content, type, filename) {
+    const blob = new Blob([content], {type});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function exportCSV() {
+    const headers = ["Employee ID", ...fieldIds, "Photo"];
+    const rows = employees.map(e => [e.id, ...fieldIds.map(id=>e[id] ?? ""), e.photo || ""]);
+    const csv = "\uFEFF" + [headers, ...rows].map(row=>row.map(csvCell).join(",")).join("\r\n");
+    downloadBlob(csv,"text/csv;charset=utf-8;","jerins-textile-employees.csv");
+    notify("CSV export created.");
+  }
+  function backupJSON() {
+    downloadBlob(JSON.stringify({app:"Jerin's Textile Employee Management",version:4,exportedAt:new Date().toISOString(),employees},null,2),"application/json;charset=utf-8;","jerins-textile-backup.json");
+    notify("JSON backup created.");
+  }
+  function importJSON(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onerror = () => notify("Could not read that file.");
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result));
+        const records = Array.isArray(parsed) ? parsed : parsed && Array.isArray(parsed.employees) ? parsed.employees : null;
+        if (!records) throw new Error("Expected an employee array or a backup with an employees array.");
+        const cleaned = records.filter(validRecord).map(e=>({...e, id:String(e.id || makeId()), fullName:String(e.fullName).trim(), mobile:String(e.mobile || ""), department:String(e.department || "Other"), designation:String(e.designation || "Staff"), salary:Number(e.salary)||0, status:statuses.includes(e.status)?e.status:"Inactive", employmentType:employmentTypes.includes(e.employmentType)?e.employmentType:"Full-time", photo:safePhoto(e.photo)}));
+        if (!cleaned.length && records.length) throw new Error("No valid employee records were found in the file.");
+        if (!confirm(`Import ${cleaned.length} valid employee record(s)? This replaces the current directory.`)) return;
+        const old = employees; employees = cleaned;
+        if (!persist()) { employees = old; return; }
+        clearForm(); render(); notify(`Imported ${cleaned.length} employee record(s).`);
+      } catch (error) { console.error(error); notify("Import failed: " + (error.message || "invalid JSON file")); }
+      finally { $("importFile").value = ""; }
+    };
+    reader.readAsText(file);
+  }
+  function downloadProfilePDF(id) {
+    const e = employees.find(item => item.id === id);
+    if (!e) return notify("Employee record not found.");
+
+    const details = [
+      ["Employee ID", e.id],
+      ["Full Name", e.fullName],
+      ["Mobile Number", e.mobile],
+      ["Email Address", e.email],
+      ["Gender", e.gender],
+      ["Date of Birth", dateText(e.dob)],
+      ["Department", e.department],
+      ["Job Designation", e.designation],
+      ["Employment Type", e.employmentType],
+      ["Joining Date", dateText(e.joiningDate)],
+      ["Monthly Salary", money(e.salary)],
+      ["Employment Status", e.status],
+      ["Emergency Contact", e.emergencyContact],
+      ["Address", e.address],
+      ["Notes", e.notes]
+    ].map(([label, value]) => [label, String(value || "—")]);
+
+    // A print-based fallback works even when the PDF library/CDN is blocked.
+    const printFallback = () => {
+      const safe = value => escapeHTML(value || "—").replace(/\n/g, "<br>");
+      const photo = safePhoto(e.photo);
+      const printWindow = window.open("", "_blank", "width=1000,height=800");
+      if (!printWindow) {
+        notify("The PDF library is unavailable and the print window was blocked. Allow pop-ups, then try again.");
+        return;
+      }
+      const rows = details.map(([label, value]) =>
+        `<div class="item"><div class="label">${safe(label)}</div><div class="value">${safe(value)}</div></div>`
+      ).join("");
+      printWindow.document.open();
+      printWindow.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Employee Profile - ${safe(e.fullName)}</title>
+        <style>
+          *{box-sizing:border-box}body{margin:0;background:#eef2ef;color:#20332b;font:13px Arial,sans-serif}
+          .page{max-width:1100px;margin:24px auto;background:#fff;padding:32px;border:1px solid #dce5df}
+          .head{background:#103c32;color:#fff;padding:24px 28px;border-bottom:5px solid #d9b56d}
+          .brand{font-size:24px;font-weight:800;letter-spacing:.2px}.sub{margin-top:6px;color:#e2ece5;font-size:12px}
+          .meta{margin-top:18px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:#d9e4dd}
+          .person{display:flex;align-items:center;gap:16px;padding:22px 0;border-bottom:1px solid #dce5df}
+          .photo{width:76px;height:76px;border-radius:12px;object-fit:cover;border:2px solid #d9b56d}
+          .initial{width:76px;height:76px;border-radius:12px;background:#f5ecd8;display:grid;place-items:center;color:#103c32;font-size:28px;font-weight:800}
+          h1{font-size:22px;margin:0 0 5px}.role{color:#66756c;font-size:12px}
+          .section{margin:22px 0 10px;font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:#20594a;font-weight:800}
+          .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+          .item{padding:11px 12px;border:1px solid #e0e8e2;border-radius:7px;break-inside:avoid;min-height:52px}
+          .label{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:#728078;font-weight:700;margin-bottom:6px}
+          .value{font-size:12px;line-height:1.45;overflow-wrap:anywhere;white-space:normal}
+          .footer{border-top:1px solid #dce5df;margin-top:24px;padding-top:12px;color:#7b887f;font-size:9px;display:flex;justify-content:space-between}
+          .actions{padding:16px;text-align:center}.actions button{border:0;border-radius:7px;background:#20594a;color:white;padding:11px 18px;font-weight:700;cursor:pointer}
+          @page{size:A4 landscape;margin:12mm}
+          @media print{body{background:#fff}.page{max-width:none;margin:0;border:0;padding:0}.head{print-color-adjust:exact;-webkit-print-color-adjust:exact}.item{break-inside:avoid}.actions{display:none}.grid{gap:7px}.item{padding:8px 10px}}
+          @media(max-width:650px){.page{margin:0;padding:14px}.grid{grid-template-columns:1fr}.meta{flex-direction:column}}
+        </style></head><body><main class="page">
+        <header class="head"><div class="brand">Jerin's Textile</div><div class="sub">EMPLOYEE MANAGEMENT • CONFIDENTIAL STAFF PROFILE</div>
+        <div class="meta"><span>Employee Profile</span><span>Generated: ${safe(new Date().toLocaleDateString("en-IN"))}</span></div></header>
+        <section class="person">${photo ? `<img class="photo" src="${photo}" alt="Employee photo">` : `<div class="initial">${safe((e.fullName || "E").trim().charAt(0).toUpperCase())}</div>`}
+        <div><h1>${safe(e.fullName)}</h1><div class="role">${safe(e.designation)} · ${safe(e.department)}</div></div></section>
+        <div class="section">Employee information</div><section class="grid">${rows}</section>
+        <footer class="footer"><span>Jerin's Textile · Employee Management System</span><span>Generated ${safe(new Date().toLocaleString("en-IN"))}</span></footer>
+        <div class="actions"><button onclick="window.print()">Print / Save as PDF</button></div>
+        </main><script>window.onload=function(){setTimeout(function(){window.focus();},250)};<\/script></body></html>`);
+      printWindow.document.close();
+      notify("Profile opened in a print-ready layout. Choose “Save as PDF” in the print dialog.");
+    };
+
+    try {
+      const jsPDF = window.jspdf && window.jspdf.jsPDF;
+      if (!jsPDF) {
+        printFallback();
+        return;
+      }
+
+      // Draw the profile directly with jsPDF; AutoTable is not required.
+      const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4", compress: true });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const margin = 13;
+      const gap = 7;
+      const colW = (pageW - margin * 2 - gap) / 2;
+      const labelW = 31;
+      const valueW = colW - labelW - 8;
+      const darkGreen = [16, 60, 50];
+      const gold = [217, 181, 109];
+      const textColor = [35, 52, 44];
+      const muted = [103, 119, 109];
+      const pale = [246, 249, 247];
+      let y = 0;
+
+      function addHeader() {
+        doc.setFillColor(...darkGreen);
+        doc.rect(0, 0, pageW, 29, "F");
+        doc.setFillColor(...gold);
+        doc.rect(0, 29, pageW, 2.2, "F");
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(20);
+        doc.text("Jerin's Textile", margin, 12);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(226, 236, 229);
+        doc.text("EMPLOYEE MANAGEMENT  |  CONFIDENTIAL STAFF PROFILE", margin, 20);
+        doc.setTextColor(255, 255, 255);
+        doc.text("Generated: " + new Date().toLocaleDateString("en-IN"), pageW - margin, 12, { align: "right" });
+        y = 39;
+      }
+
+      function addFooter() {
+        const pages = doc.internal.getNumberOfPages();
+        for (let page = 1; page <= pages; page++) {
+          doc.setPage(page);
+          doc.setDrawColor(220, 229, 223);
+          doc.line(margin, pageH - 11, pageW - margin, pageH - 11);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8);
+          doc.setTextColor(...muted);
+          doc.text("Jerin's Textile  •  Employee Management System", margin, pageH - 6);
+          doc.text(`Page ${page} of ${pages}`, pageW - margin, pageH - 6, { align: "right" });
+        }
+      }
+
+      addHeader();
+
+      // Employee summary strip
+      doc.setFillColor(246, 249, 247);
+      doc.roundedRect(margin, y, pageW - margin * 2, 19, 2, 2, "F");
+      doc.setTextColor(...darkGreen);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text(String(e.fullName || "Employee"), margin + 5, y + 8);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(...muted);
+      doc.text(`${e.designation || "—"}  |  ${e.department || "—"}`, margin + 5, y + 14);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(...darkGreen);
+      doc.text(String(e.status || "Inactive").toUpperCase(), pageW - margin - 5, y + 11, { align: "right" });
+      y += 25;
+
+      const rowGap = 3;
+      const valueFont = 9;
+      const labelFont = 7.5;
+      const leftX = margin;
+      const rightX = margin + colW + gap;
+
+      function drawItem(x, top, label, value, width) {
+        const valueLines = doc.splitTextToSize(String(value || "—"), width - labelW - 8);
+        const labelLines = doc.splitTextToSize(String(label).toUpperCase(), labelW - 4);
+        const lines = Math.max(valueLines.length, labelLines.length, 1);
+        const h = Math.max(13, 5 + lines * 4.2);
+        if (top + h > pageH - 17) {
+          doc.addPage();
+          addHeader();
+          top = y;
+        }
+        doc.setFillColor(...pale);
+        doc.setDrawColor(224, 232, 226);
+        doc.roundedRect(x, top, width, h, 1.5, 1.5, "FD");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(labelFont);
+        doc.setTextColor(...muted);
+        doc.text(labelLines, x + 3, top + 5);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(valueFont);
+        doc.setTextColor(...textColor);
+        doc.text(valueLines, x + labelW, top + 5);
+        return h;
+      }
+
+      // Lay out paired rows; long text wraps and page breaks are handled before drawing.
+      const leftDetails = details.filter((_, i) => i % 2 === 0);
+      const rightDetails = details.filter((_, i) => i % 2 === 1);
+      let rowY = y;
+      const maxY = pageH - 17;
+      for (let i = 0; i < Math.max(leftDetails.length, rightDetails.length); i++) {
+        const left = leftDetails[i] || null;
+        const right = rightDetails[i] || null;
+        const leftLines = left ? doc.splitTextToSize(String(left[1] || "—"), valueW) : [""];
+        const rightLines = right ? doc.splitTextToSize(String(right[1] || "—"), valueW) : [""];
+        const lineCount = Math.max(leftLines.length, rightLines.length, 1);
+        const h = Math.max(13, 5 + lineCount * 4.2);
+        if (rowY + h > maxY) {
+          doc.addPage();
+          addHeader();
+          rowY = y;
+        }
+        [[leftX, left, leftLines], [rightX, right, rightLines]].forEach(([x, item, lines]) => {
+          if (!item) return;
+          doc.setFillColor(...pale);
+          doc.setDrawColor(224, 232, 226);
+          doc.roundedRect(x, rowY, colW, h, 1.5, 1.5, "FD");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(labelFont);
+          doc.setTextColor(...muted);
+          doc.text(doc.splitTextToSize(item[0].toUpperCase(), labelW - 4), x + 3, rowY + 5);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(valueFont);
+          doc.setTextColor(...textColor);
+          doc.text(lines, x + labelW, rowY + 5);
+        });
+        rowY += h + rowGap;
+      }
+
+      addFooter();
+      const safeId = String(e.id || "employee").replace(/[^a-z0-9_-]/gi, "_");
+      doc.save(`Jerins-Textile-Employee-${safeId}.pdf`);
+      notify("Styled employee PDF generated.");
+    } catch (error) {
+      console.error("PDF generation failed:", error);
+      printFallback();
+    }
+  }
+
+  $("employeeForm").addEventListener("submit", event => {
+    event.preventDefault();
+    if (!$("employeeForm").reportValidity()) return;
+    const data = readForm();
+    if (!data.fullName || !data.mobile || !data.department || !data.designation || !data.joiningDate || !Number.isFinite(data.salary) || data.salary < 0) {
+      notify("Please complete all required fields correctly."); return;
+    }
+    const id = $("recordId").value;
+    const previous = employees;
+    if (id) {
+      const index = employees.findIndex(e=>e.id===id);
+      if (index < 0) return notify("Could not find the employee being edited. Please refresh and try again.");
+      employees = employees.map(e=>e.id===id ? {...e,...data,id} : e);
+    } else {
+      const record = {...data,id:makeId(),createdAt:new Date().toISOString()};
+      employees = [...employees,record];
+    }
+    if (!persist()) { employees = previous; return; }
+    render(); clearForm();
+    notify(id ? "Employee updated successfully." : "Employee saved successfully.");
+    $("recordsPanel").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  $("tableBody").addEventListener("click", event => {
+    const button = event.target.closest("button[data-action]");
+    if (!button) return;
+    const {action,id} = button.dataset;
+    if (action === "view") showProfile(id);
+    else if (action === "edit") editEmployee(id);
+    else if (action === "delete") {
+      const e = employees.find(item=>item.id===id);
+      if (!e || !confirm(`Delete employee "${e.fullName}" (${e.id})? This cannot be undone unless you have a backup.`)) return;
+      const previous = employees; employees = employees.filter(item=>item.id!==id);
+      if (!persist()) { employees = previous; return; }
+      render(); notify("Employee deleted.");
+    }
+  });
+  $("newBtn").addEventListener("click",()=>{clearForm();$("formPanel").scrollIntoView({behavior:"smooth",block:"start"});$("fullName").focus({preventScroll:true});});
+  $("clearBtn").addEventListener("click",clearForm);
+  $("search").addEventListener("input",render);
+  $("departmentFilter").addEventListener("change",render);
+  $("statusFilter").addEventListener("change",render);
+  $("csvBtn").addEventListener("click",exportCSV);
+  $("backupBtn").addEventListener("click",backupJSON);
+  $("importBtn").addEventListener("click",()=>$("importFile").click());
+  $("importFile").addEventListener("change",event=>importJSON(event.target.files && event.target.files[0]));
+  $("printBtn").addEventListener("click",()=>window.print());
+  $("closeModal").addEventListener("click",closeModal);
+  $("modal").addEventListener("click",event=>{if(event.target === $("modal")) closeModal();});
+  document.addEventListener("keydown",event=>{if(event.key === "Escape") closeModal();});
+  $("removePhoto").addEventListener("click",()=>{$("photoFile").value="";setPhotoPreview("");});
+  $("photoFile").addEventListener("change",event=>{
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    if (!/^image\/(jpeg|png|webp)$/i.test(file.type)) { notify("Choose a JPG, PNG or WebP image."); event.target.value=""; return; }
+    if (file.size > 8*1024*1024) { notify("Photo must be 8 MB or smaller."); event.target.value=""; return; }
+    const reader = new FileReader();
+    reader.onerror = () => notify("Could not read that photo.");
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => notify("That image could not be processed.");
+      img.onload = () => {
+        try {
+          const max = 600, scale = Math.min(1,max/Math.max(img.width,img.height));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1,Math.round(img.width*scale)); canvas.height = Math.max(1,Math.round(img.height*scale));
+          const ctx = canvas.getContext("2d"); ctx.drawImage(img,0,0,canvas.width,canvas.height);
+          setPhotoPreview(canvas.toDataURL("image/jpeg",0.78));
+        } catch (error) { console.error(error); notify("Could not process the photo."); }
+      };
+      img.src = String(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
+  $("year").textContent = new Date().getFullYear();
+  load();
+  clearForm();
+  render();
+})();
+</script></body></html>
